@@ -34,12 +34,12 @@ var server = https.createServer({
 
 //code start notification
 
-var redis = require('socket.io-redis');
+//var redis = require('socket.io-redis');
 var io = require('socket.io')(server);
-io.adapter(redis({
-	host: 'localhost',
-	port: 6379
-}));
+// io.adapter(redis({
+// 	host: 'localhost',
+// 	port: 6379
+// }));
 
 server.listen(port, ip, function () {
 	console.log('app is running at : https://' + ip + ":" + port);
@@ -52,43 +52,36 @@ io.sockets.on("connection", function (socket) {
 		connected: true,
 		socketId: socket.id
 	});
-	active(io);
+    //active(io);
+    socket.on("send",function(data){
+        socket.broadcast.emit("msg",data);
+    });
 	socket.on("join",function(data){
 		console.log("join");
 		socket.join(data);
-		active(io);
+		//active(io);
 	});
 	socket.on("leave",function(data){
 		console.log("leave");
 		socket.leave(data);
-		active(io);	
+		//active(io);	
 	});
 	socket.on("test",function(data){
 		socket.broadcast.emit("test-data",data);
 	});
-	socket.on("send_notification", function (data) {
-		var receivers = data.receivers;
-		if (receivers.length <= 0) {
-			io.emit("broadcast_message", data.msg);
-		} else {
-			receivers.forEach(receiver => {
-				io.to(receiver).emit("broadcast_message", data.msg);
-			});
-		}
-	});
 	socket.on("disconnect", function () {
 		console.log("disconnected, count : ", io.engine.clientsCount);
-		active(io);
+		//active(io);
 	});
 });
-function active(xio){
-	xio.in("online").clients((err , clients) => {
-		if(err){
-		console.log(err);
-	}else{
-		 xio.emit("active-user",clients.length);
-		 console.log("online : "+clients.length);
-	}
-});
-}
+// function active(xio){
+// 	xio.in("online").clients((err , clients) => {
+// 		if(err){
+// 		console.log(err);
+// 	}else{
+// 		 xio.emit("active-user",clients.length);
+// 		 console.log("online : "+clients.length);
+// 	}
+// });
+//}
 ///end notification
