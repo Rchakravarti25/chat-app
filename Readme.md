@@ -23,7 +23,7 @@
         => user connection id : Your Name : Group Name (if provided)
 
 //chat
-1. open a browser tab with credentials , follow prework section (join the group by givining a name /otherwise chat with all members)
+1. open a browser tab with credentials , follow prework section (join the group by givining a name /otherwise chat with 
+    all members will work)
 2. open other browser tab and join the group by giving name of the group if group is there (if left group name blank, chat 
     with all will work)
-3. if you want one to one chat then provide connection id in group name while joining;
