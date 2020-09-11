@@ -52,36 +52,33 @@ io.sockets.on("connection", function (socket) {
 		connected: true,
 		socketId: socket.id
 	});
-    //active(io);
+    active(io);
     socket.on("send",function(data){
         socket.broadcast.emit("msg",data);
     });
 	socket.on("join",function(data){
 		console.log("join");
 		socket.join(data);
-		//active(io);
+		active(io);
 	});
 	socket.on("leave",function(data){
 		console.log("leave");
 		socket.leave(data);
-		//active(io);	
-	});
-	socket.on("test",function(data){
-		socket.broadcast.emit("test-data",data);
+		active(io);	
 	});
 	socket.on("disconnect", function () {
 		console.log("disconnected, count : ", io.engine.clientsCount);
-		//active(io);
+		active(io);
 	});
 });
-// function active(xio){
-// 	xio.in("online").clients((err , clients) => {
-// 		if(err){
-// 		console.log(err);
-// 	}else{
-// 		 xio.emit("active-user",clients.length);
-// 		 console.log("online : "+clients.length);
-// 	}
-// });
-//}
+function active(xio){
+	xio.in("online").clients((err , clients) => {
+		if(err){
+		console.log(err);
+	}else{
+		 xio.emit("active-user", xio.engine.clientsCount);
+		 console.log("online : "+xio.engine.clientsCount);
+	}
+});
+}
 ///end notification

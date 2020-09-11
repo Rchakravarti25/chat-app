@@ -1,19 +1,26 @@
-const msgerForm = get('.msger-inputarea')
-const msgerInput = get('.msger-input')
-const msgerChat = get('.msger-chat')
-
-//const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
+const msgerForm = get('.msger-inputarea');
+const msgerInput = get('.msger-input');
+const msgerChat = get('.msger-chat');
 const PERSON_IMG = 'https://image.flaticon.com/icons/svg/145/145867.svg'
 var PERSON_NAME = ''
-const socket = io.connect(window.location.href, {
-  transports: ['websocket'],
-})
+var socket =io.connect(window.location.href, {
+    transports: ['websocket'],
+});
+
+$('#connect').on('click', function (event) {
+    PERSON_NAME = $("#myname").val();
+    $(this).closest("section").remove();
+    $(".msger").removeClass("hide");
+    $("#t").append(PERSON_NAME+"  :  ");
+});
 
 socket.on('connected', function (data) {
-  console.log(data)
-  PERSON_NAME = data.socketId;
-  $("#t").text(data.socketId);
-})
+  console.log(data);
+  $('#t').html(data.socketId +"  :  ");
+});
+socket.on("active-user",function(data){
+    $("#online").text(data);
+});
 //on send msg
 msgerForm.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -42,9 +49,7 @@ function appendMessage(name, img, side, text) {
 
         <div class="msg-text">${text}</div>
       </div>
-    </div>
-  `
-
+    </div>`
   msgerChat.insertAdjacentHTML('beforeend', msgHTML)
   msgerChat.scrollTop += 500
 }
