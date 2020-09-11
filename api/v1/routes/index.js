@@ -5,7 +5,7 @@ var page = require("../controllers/page");
 
 var router = express.Router();
 
-router.get("/",page.index);
-
+router.get("/",page.group);
+router.get("/one",page.index);
 
 module.exports = router;
